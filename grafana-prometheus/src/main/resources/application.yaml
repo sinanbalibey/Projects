@@ -1,0 +1,17 @@
+management:
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+
+mongodb:
+  connection:
+    host: localhost
+    port: 27017
+    database: grafana
+    url: mongodb://${mongodb.connection.host}:${mongodb.connection.port}/${mongodb.connection.database}
