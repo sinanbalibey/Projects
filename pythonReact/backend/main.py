@@ -18,7 +18,8 @@ DB: List[Person]=[
     Person(id=3,name="Metin Oğulcan",lastName="Koca",teams="Frontend",number=1),
     Person(id=4,name="Burak",lastName="Gül",teams="Test",number=200541039),
     Person(id=5,name="Ahmet Eren",lastName="Çelik",teams="Review",number=210541073),
-    Person(id=6,name="Beyzanur",lastName="Durmuş",teams="Proje Yöneticisi",number=1)
+    Person(id=6,name="Muhammet Ali",lastName="Şimşek",teams="Deploy",number=190541059),
+    Person(id=7,name="Beyzanur",lastName="Durmuş",teams="Proje Yöneticisi",number=1)
 ]
 
 @app.get("/api")
