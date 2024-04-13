@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İstanbul Kart Dolum Noktaları</title>
+    <style>
+        #map {
+          height: 500px;
+          width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<h1>İstanbul Kart Dolum Noktaları</h1>
+
+<div>
+    <!-- Her ilçe için butonlar -->
+    <button onclick="showLocations('ADALAR')">Adalar</button>
+    <button onclick="showLocations('ARNAVUTKOY')">Arnavutköy</button>
+    <button onclick="showLocations('ATASEHIR')">Ataşehir</button>
+    <button onclick="showLocations('ARNAVUTKOY')">Avcılar</button>
+    <button onclick="showLocations('BAGCILAR')">Bağcılar</button>
+    <button onclick="showLocations('BAHCELİEVLER')">Bahçelievler</button>
+    <button onclick="showLocations('BAKIRKOY')">Bakırköy</button>
+    <button onclick="showLocations('BASAKSEHİR')">Başakşehir</button>
+    <button onclick="showLocations('BAYRAMPASA')">Bayrampaşa</button>
+    <button onclick="showLocations('BESIKTAS')">Beşiktaş</button>
+    <button onclick="showLocations('BEYKOZ')">Beykoz</button>
+    <button onclick="showLocations('BEYLIKDUZU')">Beylikdüzü</button>
+    <button onclick="showLocations('BEYOGLU')">Beyoğlu</button>
+    <button onclick="showLocations('BUYUKCEKMECE')">Büyükçekmece</button>
+    <button onclick="showLocations('CATALCA')">Çatalca</button>
+    <button onclick="showLocations('CEKMEKOY')">Çekmeköy</button>
+    <button onclick="showLocations('ESENLER')">Esenler</button>
+    <button onclick="showLocations('ESENYURT')">Esenyurt</button>
+    <button onclick="showLocations('EYUPSULTAN')">Eyüpsultan</button>
+    <button onclick="showLocations('FATIH')">Fatih</button>
+    <button onclick="showLocations('GAZIOSMANPASA')">Gaziosmanpaşa</button>
+    <button onclick="showLocations('GUNGOREN')">Güngören</button>
+    <button onclick="showLocations('KADIKOY')">Kadıköy</button>
+    <button onclick="showLocations('KAGITHANE')">Kâğıthane</button>
+    <button onclick="showLocations('KARTAL')">Kartal</button>
+    <button onclick="showLocations('KUCUKCEKMECE')">Küçükçekmece</button>
+    <button onclick="showLocations('MALTEPE')">Maltepe</button>
+    <button onclick="showLocations('PENDIK')">Pendik</button>
+    <button onclick="showLocations('SARIYER')">Sarıyer</button>
+    <button onclick="showLocations('SILIVRI')">Silivri</button>
+    <button onclick="showLocations('SULTANBEYLI')">Sultanbeyli</button>
+    <button onclick="showLocations('SULTANGAZI')">Sultangazi</button>
+    <button onclick="showLocations('SILE')">Şile</button>
+    <button onclick="showLocations('SISLI')">Şişli</button>
+    <button onclick="showLocations('TUZLA')">Tuzla</button>
+    <button onclick="showLocations('UMRANIYE')">Ümraniye</button>
+    <button onclick="showLocations('USKUDAR')">Üsküdar</button>
+    <button onclick="showLocations('ZEYTINBURNU')">Zeytinburnu</button>
+
+
+    <!-- Diğer ilçeler için aynı şekilde butonlar ekleyebilirsiniz -->
+    <!-- Kaldır butonu -->
+    <button onclick="clearMarkers()">İşaretlemeleri Kaldır</button>
+</div>
+
+<div id="map"></div>
+
+<script>
+    var map;
+    var markers = [];
+
+    function initMap() {
+      // Harita oluşturma
+      map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 11,
+        center: new google.maps.LatLng(41, 29) // İstanbul'un merkezi bir konumu
+      });
+    }
+
+    function showLocations(townId) {
+      // Önceki işaretlemeleri kaldır
+      clearMarkers();
+
+      // AJAX ile verileri al
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "http://localhost:8080/locations/" + townId, true);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          var locations = JSON.parse(xhr.responseText);
+          // Her bir konum için işaretçi ekle
+          locations.forEach(function(location) {
+            var latLng = new google.maps.LatLng(parseFloat(location.latitude), parseFloat(location.longitude));
+            var marker = new google.maps.Marker({
+              position: latLng,
+              map: map,
+              title: location.terminalId // İsteğe bağlı olarak, işaretçiye başlık ekle
+            });
+            markers.push(marker);
+          });
+        }
+      };
+      xhr.send();
+    }
+
+    function clearMarkers() {
+      // Tüm işaretçileri kaldır
+      markers.forEach(function(marker) {
+        marker.setMap(null);
+      });
+      markers = [];
+    }
+</script>
+
+
+<!-- Google Maps API kütüphanesi -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyANPSC0RwsohmuBId_TUsbVIF15XGGIXIU&callback=initMap" async defer></script>
+
+</body>
+</html>
